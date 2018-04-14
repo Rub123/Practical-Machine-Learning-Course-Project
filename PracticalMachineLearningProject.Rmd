@@ -40,7 +40,7 @@ pml_training <- read_csv("pml-training.csv")
 pml_testing <- read_csv("pml-testing.csv")
 pml_training$classe <- as.factor(pml_training$classe) #convert "classe" variable to a factor
 ```
-the training data has `r nrow(pml_training)` observations and `r ncol(pml_training)` variables.
+the training data has 19,622  observations and 160 variables.
 The goal of the model is to predict the "classe" variable from the training data on the testing data.
 ```{r}
 ggplot(data = pml_training,aes(x = pml_training$classe)) + geom_bar() + ggtitle("The classe variable frequency in the training dataset","Class A is the correct execution of the exercise, the other 4 classes correspond to common mistakes") + xlab("classe")
@@ -70,7 +70,7 @@ for(i in 1:training_ncols){
 }
 pml_training <- pml_training[,!most_NA] 
 ```
-we're left with `r ncol(pml_training) -1` variables + the classe variable
+we're left with 53 variables + the classe variable
 
 checking for remaining missing values
 ```{r}
@@ -125,10 +125,10 @@ pred_rf <- predict(fit_rf,validation)
 Accuracy_rf <- confusionMatrix(data = pred_rf, reference = validation$classe)$overall["Accuracy"]
 confusionMatrix(data = pred_rf, reference = validation$classe)
 ```
-the Accuracy of the model is: `r Accuracy_rf`.
-so the **out of sample error** estimate is: 1 - `r Accuracy_rf` = `r 1 - Accuracy_rf`
+the Accuracy of the model is: 0.9981776.
+so the **out of sample error** estimate is: 1 - 0.9981776 = 0.0018224
 
-**The number of predictors sampled for spliting at each node:** `r fit_rf$finalModel$mtry`
+**The number of predictors sampled for spliting at each node:** 27
 ```{r}
 ggplot(fit_rf) + theme_bw() + xlab("Number of variables randomly sampled as candidates at each split") +
     ggtitle("Accuracy Estimate Vs Randomly Selected Predictors")
